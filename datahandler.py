@@ -143,14 +143,14 @@ class DatabaseConnector:
         values.append(session_id)
         sql = f"UPDATE sessions SET {', '.join(fields)} WHERE id=%s"
         self.cursor.execute(sql, tuple(values))
-        self.con.commit()
+        self.connection.commit()
         self.close()
         
     def remove_session(self, session_id):
         self.connect()
         sql = "DELETE FROM sessions WHERE id=%s"
         self.cursor.execute(sql, (session_id,))
-        self.con.commit()
+        self.connection.commit()
         self.close() 
 
     def fetch_sessions_by_task(self, task_id): 
@@ -261,7 +261,7 @@ class DatabaseConnector:
             VALUES (%s, %s, %s)
         """
         self.cursor.execute(sql, (week_start, week_end, reflection_text))
-        self.con.commit()
+        self.connection.commit()
         self.close()
 
     def fetch_reflections(self): 
@@ -275,14 +275,14 @@ class DatabaseConnector:
         self.connect()
         sql = "UPDATE reflections SET reflection_text=%s WHERE id=%s"
         self.cursor.execute(sql, (reflection_text, reflection_id))
-        self.con.commit()
+        self.connection.commit()
         self.close()
 
     def remove_reflection(self, reflection_id):
         self.connect()
         sql = "DELETE FROM reflections WHERE id=%s"
         self.cursor.execute(sql, (reflection_id,))
-        self.con.commit()
+        self.connection.commit()
         self.close()
 
 
