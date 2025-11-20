@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from datahandler import DatabaseConnector
 from weeklysummary import *
 from PomodoroTimer import *
+from progress_analyzer.py import *
 def display_menu():
     print("========== KRONOS STUDY TRACKER ==========")
     print("1. Manage Assignments")
@@ -28,7 +29,7 @@ while True:
     if choice == "3":# Albert's code
          pomodoro_main()
     if choice =="4":# Alvin's code
-         print("Alvins")
+         display_progress_summary()
     if choice =="5":# My code
          weekly_summary_menu()
     if choice =="6": # My code
