@@ -26,9 +26,7 @@ while True:
     if choice =="2":# Raphael's code
          print("Rafeals")
     if choice == "3":# Albert's code
-         pass
-        #  from PomodoroTimer import main as pomodoro_main
-        #  pomodoro_main()
+         pomodoro_main()
     if choice =="4":# Alvin's code
          print("Alvins")
     if choice =="5":# My code
