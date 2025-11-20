@@ -34,7 +34,7 @@ def generate_weekly_summary():
     database.cursor.execute(sql_hours, (week_start, week_end))
     result = database.cursor.fetchone()
     total_minutes = result['total_minutes'] if result['total_minutes'] else 0
-    total_hours = round(total_minutes / 60.0, 1)
+    total_hours = round(float(total_minutes) / 60.0, 1)
 
     #  getting the task complede 
     sql_completed = """
@@ -81,7 +81,7 @@ def generate_weekly_summary():
 
     if row:
         productive_day = row['study_day']
-        productive_hours = round(row['minutes'] / 60.0, 1)
+        productive_hours = round(float(row['minutes']) / 60.0, 1)
     else:
         productive_day = "None"
         productive_hours = 0

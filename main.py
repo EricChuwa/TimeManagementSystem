@@ -5,6 +5,7 @@ import mysql.connector
 from datetime import datetime, timedelta
 from datahandler import DatabaseConnector
 from weeklysummary import *
+from PomodoroTimer import *
 def display_menu():
     print("========== KRONOS STUDY TRACKER ==========")
     print("1. Manage Assignments")

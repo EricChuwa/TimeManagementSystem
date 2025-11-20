@@ -125,13 +125,19 @@ class DatabaseConnector:
 
     # Add Study Session
     def add_session(self, task_id, start_time, end_time, duration_minutes, session_type='work'):
-        self.connect()
-        sql = """
-            INSERT INTO sessions (task_id, start_time, end_time, duration_minutes, session_type) VALUES (%s, %s, %s, %s, %s)
-            """
-        self.cursor.execute(sql, (task_id, start_time, end_time, duration_minutes, session_type))
-        self.connection.commit()
-        self.close()
+        try:
+            self.connect()
+            sql = """
+                INSERT INTO sessions (task_id, start_time, end_time, duration_minutes, session_type) VALUES (%s, %s, %s, %s, %s)
+                """
+            self.cursor.execute(sql, (task_id, start_time, end_time, duration_minutes, session_type))
+            self.connection.commit()
+            return True
+        except Exception as e:
+            print(f"Error adding session: {e}")
+            return False  # failure
+        finally:
+             self.close()
 
     def edit_session(self, session_id, **kwargs): 
         self.connect()
