@@ -125,13 +125,19 @@ class DatabaseConnector:
 
     # Add Study Session
     def add_session(self, task_id, start_time, end_time, duration_minutes, session_type='work'):
-        self.connect()
-        sql = """
-            INSERT INTO sessions (task_id, start_time, end_time, duration_minutes, session_type) VALUES (%s, %s, %s, %s, %s)
-            """
-        self.cursor.execute(sql, (task_id, start_time, end_time, duration_minutes, session_type))
-        self.conn.commit()
-        self.close
+        try:
+            self.connect()
+            sql = """
+                INSERT INTO sessions (task_id, start_time, end_time, duration_minutes, session_type) VALUES (%s, %s, %s, %s, %s)
+                """
+            self.cursor.execute(sql, (task_id, start_time, end_time, duration_minutes, session_type))
+            self.connection.commit()
+            return True
+        except Exception as e:
+            print(f"Error adding session: {e}")
+            return False  # failure
+        finally:
+             self.close()
 
     def edit_session(self, session_id, **kwargs): 
         self.connect()
@@ -257,7 +263,7 @@ class DatabaseConnector:
     def add_reflection(self, week_start, week_end, reflection_text): 
         self.connect()
         sql = """
-            INSERT INTO reflections (week_start_date, week_end_date, reflection_text)
+            INSERT INTO reflections (week_start, week_end, reflection_text)
             VALUES (%s, %s, %s)
         """
         self.cursor.execute(sql, (week_start, week_end, reflection_text))
@@ -266,7 +272,7 @@ class DatabaseConnector:
 
     def fetch_reflections(self): 
         self.connect()
-        self.cursor.execute("SELECT * FROM reflections ORDER BY week_start_date DESC")
+        self.cursor.execute("SELECT * FROM reflections ORDER BY week_start DESC")
         reflections = self.cursor.fetchall()
         self.close()
         return reflections
@@ -274,9 +280,14 @@ class DatabaseConnector:
     def edit_reflection(self, reflection_id, reflection_text): 
         self.connect()
         sql = "UPDATE reflections SET reflection_text=%s WHERE id=%s"
-        self.cursor.execute(sql, (reflection_text, reflection_id))
-        self.connection.commit()
-        self.close()
+        try:
+            self.cursor.execute(sql, (reflection_text, reflection_id))
+            self.connection.commit()
+            self.close()
+            return True
+        except Exception as e:
+            print("Error updating",e)
+            return False
 
     def remove_reflection(self, reflection_id):
         self.connect()
