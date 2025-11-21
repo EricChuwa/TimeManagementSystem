@@ -166,13 +166,17 @@ def write_reflection():
     next_actions = input("Your answer: ").strip()
 
     # Now creating a message using a variable
-    reflection_text = print("\n")
-    reflection_text += "\n""--------------------------------------------------\n\n"
-    reflection_text += f"\nWhat I learned: {learning}\n"
-    reflection_text += f"What went well: {went_well}\n"
-    reflection_text += f"What was challenging: {challenge}\n"
-    reflection_text += f"Future changes: {next_actions}\n\n"
-    reflection_text += "\n""--------------------------------------------------"
+    reflection_text = f"""
+    --------------------------------------------------
+
+    What I learned: {learning}
+    What went well: {went_well}
+    What was challenging: {challenge}
+    Future changes: {next_actions}
+
+    --------------------------------------------------
+    """
+
 
     # Saving the message to database
     database = DatabaseConnector()
@@ -185,11 +189,16 @@ def write_reflection():
 def view_past_reflections():
 
     database = DatabaseConnector()
+
+    if not database.connect():
+        print("Unable to connect to the database.")
+        return
+
     reflections = database.fetch_reflections()
     
-    print("\n""--------------------------------------------------")
+    print("\n--------------------------------------------------")
     print("========= PAST REFLECTIONS ================")
-    print("\n""--------------------------------------------------")
+    print("\n--------------------------------------------------")
     
     if not reflections:
         print("No reflections saved yet.")
@@ -205,7 +214,7 @@ def view_past_reflections():
         print(reflection_text)
         print()
     
-    print("\n""--------------------------------------------------")
+    print("\n--------------------------------------------------")
 
 def deleting_reflections():
     database = DatabaseConnector()   
