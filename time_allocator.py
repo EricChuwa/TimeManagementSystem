@@ -14,39 +14,77 @@ from typing import List, Dict, Tuple
 class TimeAllocator():
     def __init__(self):
         self.database_handler = datahandler.DatabaseConnector() # Used for referencing the methods in the datahandler's DatabaseConnector class
-        self.tasks = {} # initializing task storage
+        self.tasks = self.database_handler.fetch_tasks_by_status('Pending') + self.database_handler.fetch_tasks_by_status('In Progress') # Storing "Pending" and "In Progress Assignments"
 
     """
     Calculate the priority score for an assignment
     The higher the score, the more urgent the task
     """
-    def fetch_and_store_tasks(self):
-        tasks = self.database_handler.fetch_tasks_by_status('Pending') + self.database_handler.fetch_tasks_by_status('In Progress')
-        for task in tasks:
-            print(f"{task['id']}. {task['title']}")
 
-    def calculate_priority(self, estimated_hours: float, deadline: str) -> float:
+    def calculate_priority(self, estimated_hours: float, deadline) -> float:
     # The function is made to ensure that the return value is a number by adding the parameters and also the "-> float" meaning this function returns as a float
         
         #Getting today's date
         today = datetime.now().date()
         #Converting the deadline string to a date object
-        deadline_date = datetime.strptime(deadline, '%Y-%m-%d').date()
+        deadline_date = deadline
         #Calculate days remaining
         days_remaining = (deadline_date - today).days
 
         if days_remaining <= 0:
             #Assignment is overdue or due today
-            return float('inf')
+            return float('10')
         
         #Calculating the priority score
         priority_score = estimated_hours / days_remaining
 
         return priority_score
     
+    """
+    Assign the priority to each of the tasks and sort them in accordance with their priority
+    Returns a list of tasks.
+    """
+    def indexing_tasks_with_priorities(self): 
+        prioritized_tasks = [] # list for the tasks
+
+        # iterating through tasks
+        for task in self.tasks:
+            priority = self.calculate_priority(task['estimated_hours'], task['deadline'])
+
+            # Storiing the task id and priority of tasks in one list
+            prioritized_tasks.append({
+                "task_id" : task["id"],
+                "priority" : priority
+            })
+        
+        # Sorting prioritized 
+        sorted_tasks = sorted(prioritized_tasks, key=lambda d: d['priority'], reverse=True)
+        prioritized_with_index = []
+
+        # Store all the sorted tasks in a list in accordance to their priority.
+        for index, item in enumerate(sorted_tasks, start=1):
+            prioritized_with_index.append({
+                "index": index,
+                "task_id" : item['task_id'],
+                "priority" : item['priority']
+            })
+
+        return prioritized_with_index
+
+    """
+    Main Function
+    """
+    def main(self):
+        prioritized_tasks = self.indexing_tasks_with_priorities()
+
+        # Output: [prioritized_task["index"]]. task[prioritized_task]
+        for prioritized_task in prioritized_tasks:
+                item = self.database_handler.fetch_task_by_id(prioritized_task['task_id'])
+                print(f'{prioritized_task['index']}. {item['title']} (Due: {item['deadline']})')
+                
 # TEST CODE - We'll remove this later
 test = TimeAllocator()
-test.fetch_and_store_tasks()
+test.main()
 # if __name__ == "__main__":
 #     print("=" * 50)
 #     print("TESTING PRIORITY CALCULATOR")
