@@ -36,7 +36,6 @@ class DatabaseConnector:
         
     # Task methods
     def add_task(self, title, deadline, estimated_hours, status='Pending'):
-        self.connect()
         sql = """
                 INSERT INTO tasks (title, deadline, estimated_hours, status) VALUES (%s, %s, %s, %s)
                 """
@@ -45,7 +44,7 @@ class DatabaseConnector:
         self.close()
 
     def edit_task(self, task_id, **kwargs):
-        self.connect()
+        
 
         fields = []
         values = []
@@ -63,14 +62,14 @@ class DatabaseConnector:
         self.close()
 
     def remove_task(self, task_id): 
-        self.connect()
+        
         sql = "DELETE FROM tasks WHERE id=%s"
         self.cursor.execute(sql, (task_id,))
         self.connection.commit()
         self.close()
 
     def fetch_tasks(self): 
-        self.connect()
+        
         self.cursor.execute("SELECT * FROM tasks")
         tasks = self.cursor.fetchall()
         self.close()
@@ -78,7 +77,7 @@ class DatabaseConnector:
         return tasks
 
     def fetch_task_by_id(self, task_id):
-        self.connect()
+        
         self.cursor.execute("SELECT * FROM tasks WHERE id=%s", (task_id,))
         task = self.cursor.fetchone()
         self.close()
@@ -86,7 +85,7 @@ class DatabaseConnector:
         return task
 
     def fetch_tasks_by_status(self, status): 
-        self.connect()
+        
         self.cursor.execute("SELECT * FROM tasks WHERE status=%s", (status,))
         tasks = self.cursor.fetchall()
         self.close()
@@ -94,7 +93,7 @@ class DatabaseConnector:
         return tasks
 
     def fetch_tasks_due_soon(self, days=3):
-        self.connect()
+        
         sql = """
             SELECT * FROM tasks
             WHERE deadline <= CURDATE() + INTERVAL %s DAY AND status!='Completed'
@@ -107,7 +106,7 @@ class DatabaseConnector:
         return tasks
 
     def fetch_tasks_by_module(self, module_name):
-        self.connect()
+        
         self.cursor.execute("SELECT * FROM tasks WHERE module=%s", (module_name,))
         tasks = self.cursor.fetchall()
         self.close()
@@ -115,7 +114,7 @@ class DatabaseConnector:
         return tasks
     
     def fetch_overdue_tasks(self):
-        self.connect()
+        
         sql = "SELECT * FROM tasks WHERE deadline < CURDATE() AND status!='Completed'"
         self.cursor.execute(sql)
         tasks = self.cursor.fetchall()
@@ -126,7 +125,7 @@ class DatabaseConnector:
     # Add Study Session
     def add_session(self, task_id, start_time, end_time, duration_minutes, session_type='work'):
         try:
-            self.connect()
+            
             sql = """
                 INSERT INTO sessions (task_id, start_time, end_time, duration_minutes, session_type) VALUES (%s, %s, %s, %s, %s)
                 """
@@ -140,7 +139,7 @@ class DatabaseConnector:
              self.close()
 
     def edit_session(self, session_id, **kwargs): 
-        self.connect()
+        
         fields = []
         values = []
         for key, value in kwargs.items():
@@ -153,28 +152,28 @@ class DatabaseConnector:
         self.close()
         
     def remove_session(self, session_id):
-        self.connect()
+        
         sql = "DELETE FROM sessions WHERE id=%s"
         self.cursor.execute(sql, (session_id,))
         self.connection.commit()
         self.close() 
 
     def fetch_sessions_by_task(self, task_id): 
-        self.connect()
+        
         self.cursor.execute("SELECT * FROM sessions WHERE task_id=%s", (task_id,))
         sessions = self.cursor.fetchall()
         self.close()
         return sessions
 
     def fetch_sessions(self): 
-        self.connect()
+        
         self.cursor.execute("SELECT * FROM sessions")
         sessions = self.cursor.fetchall()
         self.close()
         return sessions
 
     def fetch_sessions_by_date_range(self, start_date, end_date):
-        self.connect()
+        
         sql = """
             SELECT * FROM sessions
             WHERE start_time >= %s AND end_time <= %s
@@ -186,7 +185,7 @@ class DatabaseConnector:
         return sessions
     
     def fetch_session_by_id(self, session_id):
-        self.connect()
+        
         self.cursor.execute("SELECT * FROM sessions WHERE id=%s", (session_id,))
         session = self.cursor.fetchone()
         self.close()
@@ -194,7 +193,7 @@ class DatabaseConnector:
 
     # Analytics
     def total_study_hours(self):
-        self.connect()
+        
         sql = "SELECT SUM(duration_minutes) AS total_minutes FROM sessions WHERE session_type='work'"
         self.cursor.execute(sql)
         result = self.cursor.fetchone()
@@ -205,7 +204,7 @@ class DatabaseConnector:
             return 0
 
     def completion_rate(self):
-        self.connect()
+        
         sql_total = "SELECT COUNT(*) AS total FROM tasks"
         sql_completed = "SELECT COUNT(*) AS completed FROM tasks WHERE status='Completed'"
         self.cursor.execute(sql_total)
@@ -219,7 +218,7 @@ class DatabaseConnector:
         return round((completed / total) * 100, 2)  # percent
 
     def average_session_length(self):
-        self.connect()
+        
         sql = "SELECT AVG(duration_minutes) AS avg_minutes FROM sessions WHERE session_type='work'"
         self.cursor.execute(sql)
         result = self.cursor.fetchone()
@@ -230,7 +229,7 @@ class DatabaseConnector:
             return 0
 
     def most_productive_day(self):
-        self.connect()
+        
         sql = """
             SELECT DATE(start_time) AS study_day, SUM(duration_minutes) AS minutes
             FROM sessions
@@ -248,7 +247,7 @@ class DatabaseConnector:
             return None, 0
 
     def tasks_completed_on_time(self):
-        self.connect()
+        
         sql = """
             SELECT COUNT(*) AS on_time
             FROM tasks
@@ -261,7 +260,7 @@ class DatabaseConnector:
 
     # Reflection Access
     def add_reflection(self, week_start, week_end, reflection_text): 
-        self.connect()
+        
         sql = """
             INSERT INTO reflections (week_start, week_end, reflection_text)
             VALUES (%s, %s, %s)
@@ -271,14 +270,14 @@ class DatabaseConnector:
         self.close()
 
     def fetch_reflections(self): 
-        self.connect()
+        
         self.cursor.execute("SELECT * FROM reflections ORDER BY week_start DESC")
         reflections = self.cursor.fetchall()
         self.close()
         return reflections
         
     def edit_reflection(self, reflection_id, reflection_text): 
-        self.connect()
+        
         sql = "UPDATE reflections SET reflection_text=%s WHERE id=%s"
         try:
             self.cursor.execute(sql, (reflection_text, reflection_id))
@@ -290,13 +289,9 @@ class DatabaseConnector:
             return False
 
     def remove_reflection(self, reflection_id):
-        self.connect()
+        
         sql = "DELETE FROM reflections WHERE id=%s"
         self.cursor.execute(sql, (reflection_id,))
         self.connection.commit()
         self.close()
 
-
-
-test = DatabaseConnector()
-test.connect()

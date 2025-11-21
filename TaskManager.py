@@ -151,6 +151,7 @@ class TaskManager():
             print(f"{key}: {item.desc}")
 
     def main(self):
+        self.database_handler.connect()
         while True:
             print("\nKronos: ")
             self.menu_display(self.main_menu_options)
@@ -167,6 +168,8 @@ class TaskManager():
                     break
             else:
                 print("Invalid Selection")
+        
+        self.database_handler.close()
 
 test = TaskManager()
 test.main()

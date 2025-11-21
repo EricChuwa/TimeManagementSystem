@@ -1,9 +1,3 @@
-# import PomodoroTimer
-import sqlite3
-import os
-import mysql.connector
-from datetime import datetime, timedelta
-from datahandler import DatabaseConnector
 from weeklysummary import *
 from PomodoroTimer import *
 from progress_analyzer import *

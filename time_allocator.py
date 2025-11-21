@@ -75,6 +75,8 @@ class TimeAllocator():
     Main Function
     """
     def main(self):
+        self.database_handler.connect()
+
         prioritized_tasks = self.indexing_tasks_with_priorities()
 
         # Output: [prioritized_task["index"]]. task[prioritized_task]
@@ -82,38 +84,7 @@ class TimeAllocator():
                 item = self.database_handler.fetch_task_by_id(prioritized_task['task_id'])
                 print(f'{prioritized_task['index']}. {item['title']} (Due: {item['deadline']}) | Priority: {prioritized_task['priority']}')
                 
+        self.database_handler.connect()
 # TEST CODE - We'll remove this later
 test = TimeAllocator()
 test.main()
-# if __name__ == "__main__":
-#     print("=" * 50)
-#     print("TESTING PRIORITY CALCULATOR")
-#     print("=" * 50)
-   
-#     # Test 1: Assignment due in 2 days, needs 10 hours
-#     print("\n📝 Test 1: 10 hours, due in 2 days")
-#     priority1 = test.calculate_priority(10, '2025-11-15')
-#     print(f"   Priority Score: {priority1}")
-#     print(f"   Expected: 5.0")
-   
-#     # Test 2: Assignment due in 10 days, needs 3 hours
-#     print("\n📝 Test 2: 3 hours, due in 10 days")
-#     priority2 = test.calculate_priority(3, '2025-11-23')
-#     print(f"   Priority Score: {priority2}")
-#     print(f"   Expected: 0.3")
-   
-#     # Test 3: Assignment due today
-#     print("\n📝 Test 3: 5 hours, due TODAY")
-#     priority3 = test.calculate_priority(5, '2025-11-13')
-#     print(f"   Priority Score: {priority3}")
-#     print(f"   Expected: inf (infinity)")
-   
-#     # Test 4: Your custom test!
-#     print("\n📝 Test 4: 8 hours, due in 4 days")
-#     priority4 = test.calculate_priority(8, '2025-11-17')
-#     print(f"   Priority Score: {priority4}")
-#     print(f"   Expected: 2.0")
-   
-#     print("\n" + "=" * 50)
-#     print("✅ All tests completed!")
-#     print("=" * 50)
