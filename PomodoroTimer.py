@@ -60,7 +60,7 @@ def set_session_minutes():
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 def pomodoro_main():
-    print("========== KRONOS STUDY TRACKER ==========")
+    print("\n========== KRONOS STUDY TRACKER ==========")
     print("Starting Pomodoro Timer Session")
     minutes=set_session_minutes()
     adding_to_database(minutes)

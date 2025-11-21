@@ -7,6 +7,8 @@ from collections import namedtuple
 class TaskManager():
     def __init__(self):
         self.database_handler = datahandler.DatabaseConnector()
+        self.database_handler.connect()
+
         Menu = namedtuple('Menu', ['desc', 'func'])
 
         self.main_menu_options = {
@@ -14,7 +16,7 @@ class TaskManager():
             "2" : Menu("Edit Task", self.edit_task),
             "3" : Menu("Complete Task", self.complete_task),
             "4" : Menu("View_Tasks", self.view_tasks),
-            "5" : Menu("Return to main Menu", None)
+            "0" : Menu("Return to main Menu", None)
         }
 
         self.task_details_menu = {
@@ -50,6 +52,7 @@ class TaskManager():
             return
 
         self.database_handler.add_task(task_name, deadline, estimated_hours)
+        print("==========================================")
         print("\nTask Successfully added!\n")
 
     def edit_task(self): 
@@ -74,11 +77,13 @@ class TaskManager():
 
                 while True:
                     # printing list of details
+                    print("\n================== TASKS =================")
                     print(f"Task Name: {selected_task_details['title']}\nDeadline: {selected_task_details['deadline']}\nEstimated Time for Completion (ETC): {selected_task_details['estimated_hours']}\n")
 
                     self.menu_display(self.task_details_menu) # Printing detail menu
 
                     chosen_detail = input("Enter Selection: ")
+                    print("==========================================")
                     menu_item = self.task_details_menu.get(chosen_detail)
 
                     if menu_item:
@@ -90,6 +95,7 @@ class TaskManager():
                                 month = int(input("Enter New Month (MM): "))
                                 year = int(input("Enter New Year (YYYY): "))
                                 new_deadline = date(year,month,day).strftime('%Y-%m-%d') # Puts the date in correct format for database
+                                print("==========================================")
                             except Exception as e:
                                 print(f"!Error: {e}")
 
@@ -100,7 +106,7 @@ class TaskManager():
                         # Deals with ETC change
                         elif menu_item.desc == 'Estimated Time for Completion':   
                             new_etc = int(input("\nEnter New Estimated Hours: "))
-
+                            print("==========================================")
                             menu_item.func(user_selected_id, new_etc)
                             print("\nUpdate Complete\n")
                             break
@@ -108,7 +114,7 @@ class TaskManager():
                         # Deals with title change
                         elif menu_item.desc == 'Name':
                             new_name = input("\nEnter New Assignment Name: ")
-
+                            print("==========================================")
                             menu_item.func(user_selected_id, new_name)
                             print("\nUpdate Complete\n")
                             break
@@ -129,11 +135,12 @@ class TaskManager():
         pending_tasks = self.database_handler.fetch_tasks_by_status('Pending')
         tasks_in_progress = self.database_handler.fetch_tasks_by_status('In Progress')
 
+        print("\n================== TASKS =================")
         for pending_task in pending_tasks: 
             print(f"{pending_task['id']}. {pending_task['title']} (Status: {pending_task['status']})")
         for task_in_progress in tasks_in_progress:
             print(f"{task_in_progress['id']}. {task_in_progress['title']} (Status: {task_in_progress['status']})")
-
+        print("==========================================")
         user_selection = int(input("Select the Number of the Task you wish to complete: "))
 
         self.database_handler.edit_task(user_selection, status = "Completed")
@@ -141,7 +148,7 @@ class TaskManager():
     def view_tasks(self):
         tasks = self.database_handler.fetch_tasks() # Saving all existing tasks into list
 
-        print("Tasks: ")
+        print("\n================== TASKS =================")
         # Iterating through tasks
         for task in tasks:
             print(f"{task['id']}. {task['title']} (Status: {task['status']}) | Due: {task['deadline']}") 
@@ -151,9 +158,8 @@ class TaskManager():
             print(f"{key}: {item.desc}")
 
     def main(self):
-        self.database_handler.connect()
         while True:
-            print("\nKronos: ")
+            print("\n================== TASKS =================")
             self.menu_display(self.main_menu_options)
 
             user_choice = input("Enter Selection: ")
@@ -162,14 +168,12 @@ class TaskManager():
 
             if menu_item:
                 if menu_item.func:
+                    print("==========================================")
                     menu_item.func()
                 else:
-                    print("Toodles... ")
+                    print("==========================================")
                     break
             else:
+                print("==========================================")
                 print("Invalid Selection")
-        
-        self.database_handler.close()
 
-test = TaskManager()
-test.main()

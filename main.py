@@ -1,12 +1,22 @@
+#importing database handler
+import datahandler
+
+# Importing peoples files
 from weeklysummary import *
 from PomodoroTimer import *
 from progress_analyzer import *
-from TaskManager import TaskManager
+from TaskManager import *
+from time_allocator import *
 
+# Initializing class handlers
 task_handler = TaskManager()
+time_allocater = TimeAllocator()
+
+data_handler = DatabaseConnector()
+data_handler.connect()
 
 def display_menu():
-    print("========== KRONOS STUDY TRACKER ==========")
+    print("\n========== KRONOS STUDY TRACKER ==========")
     print("1. Manage Assignments")
     print("2. View Study Plan")
     print("3. Start Timer")
@@ -24,7 +34,7 @@ while True:
     if choice =="1": # Eric's code
          task_handler.main()
     if choice =="2":# Raphael's code
-         print("Rafeals")
+         time_allocater.main()
     if choice == "3":# Albert's code
          pomodoro_main()
     if choice =="4":# Alvin's code

@@ -16,13 +16,14 @@ class DatabaseConnector:
         }
         self.connection = None
         self.cursor = None
+
+        
         
 
     def connect(self):
         try:
             self.connection = mysql.connector.connect(**self.config)
             if self.connection.is_connected():
-                print("\nDatabase status: Connected Successfull\n")
                 self.cursor = self.connection.cursor(dictionary=True)
         except mysql.connector.Error as err:
             print(f"Error: {err}")
@@ -36,16 +37,17 @@ class DatabaseConnector:
         
     # Task methods
     def add_task(self, title, deadline, estimated_hours, status='Pending'):
+        
         sql = """
                 INSERT INTO tasks (title, deadline, estimated_hours, status) VALUES (%s, %s, %s, %s)
                 """
         self.cursor.execute(sql, (title, deadline, estimated_hours, status))
         self.connection.commit()
-        self.close()
+        
 
     def edit_task(self, task_id, **kwargs):
         
-
+        
         fields = []
         values = []
 
@@ -59,20 +61,20 @@ class DatabaseConnector:
 
         self.cursor.execute(sql, tuple(values))
         self.connection.commit()
-        self.close()
+        
 
     def remove_task(self, task_id): 
         
         sql = "DELETE FROM tasks WHERE id=%s"
         self.cursor.execute(sql, (task_id,))
         self.connection.commit()
-        self.close()
+        
 
     def fetch_tasks(self): 
         
         self.cursor.execute("SELECT * FROM tasks")
         tasks = self.cursor.fetchall()
-        self.close()
+        
 
         return tasks
 
@@ -80,7 +82,7 @@ class DatabaseConnector:
         
         self.cursor.execute("SELECT * FROM tasks WHERE id=%s", (task_id,))
         task = self.cursor.fetchone()
-        self.close()
+        
 
         return task
 
@@ -88,7 +90,7 @@ class DatabaseConnector:
         
         self.cursor.execute("SELECT * FROM tasks WHERE status=%s", (status,))
         tasks = self.cursor.fetchall()
-        self.close()
+        
 
         return tasks
 
@@ -101,7 +103,7 @@ class DatabaseConnector:
         """
         self.cursor.execute(sql, (days,))
         tasks = self.cursor.fetchall()
-        self.close()
+        
 
         return tasks
 
@@ -109,7 +111,7 @@ class DatabaseConnector:
         
         self.cursor.execute("SELECT * FROM tasks WHERE module=%s", (module_name,))
         tasks = self.cursor.fetchall()
-        self.close()
+        
 
         return tasks
     
@@ -118,12 +120,13 @@ class DatabaseConnector:
         sql = "SELECT * FROM tasks WHERE deadline < CURDATE() AND status!='Completed'"
         self.cursor.execute(sql)
         tasks = self.cursor.fetchall()
-        self.close()
+        
 
         return tasks
 
     # Add Study Session
     def add_session(self, task_id, start_time, end_time, duration_minutes, session_type='work'):
+        
         try:
             
             sql = """
@@ -136,7 +139,8 @@ class DatabaseConnector:
             print(f"Error adding session: {e}")
             return False  # failure
         finally:
-             self.close()
+            print("")
+             
 
     def edit_session(self, session_id, **kwargs): 
         
@@ -149,27 +153,27 @@ class DatabaseConnector:
         sql = f"UPDATE sessions SET {', '.join(fields)} WHERE id=%s"
         self.cursor.execute(sql, tuple(values))
         self.connection.commit()
-        self.close()
+        
         
     def remove_session(self, session_id):
         
         sql = "DELETE FROM sessions WHERE id=%s"
         self.cursor.execute(sql, (session_id,))
         self.connection.commit()
-        self.close() 
+         
 
     def fetch_sessions_by_task(self, task_id): 
         
         self.cursor.execute("SELECT * FROM sessions WHERE task_id=%s", (task_id,))
         sessions = self.cursor.fetchall()
-        self.close()
+        
         return sessions
 
     def fetch_sessions(self): 
         
         self.cursor.execute("SELECT * FROM sessions")
         sessions = self.cursor.fetchall()
-        self.close()
+        
         return sessions
 
     def fetch_sessions_by_date_range(self, start_date, end_date):
@@ -180,7 +184,7 @@ class DatabaseConnector:
         """
         self.cursor.execute(sql, (start_date, end_date))
         sessions = self.cursor.fetchall()
-        self.close()
+        
 
         return sessions
     
@@ -188,7 +192,7 @@ class DatabaseConnector:
         
         self.cursor.execute("SELECT * FROM sessions WHERE id=%s", (session_id,))
         session = self.cursor.fetchone()
-        self.close()
+        
         return session
 
     # Analytics
@@ -197,7 +201,7 @@ class DatabaseConnector:
         sql = "SELECT SUM(duration_minutes) AS total_minutes FROM sessions WHERE session_type='work'"
         self.cursor.execute(sql)
         result = self.cursor.fetchone()
-        self.close()
+        
         if result and result['total_minutes']:
             return round(result['total_minutes'] / 60, 2)  # hours as float
         else:
@@ -211,7 +215,7 @@ class DatabaseConnector:
         total = self.cursor.fetchone()['total']
         self.cursor.execute(sql_completed)
         completed = self.cursor.fetchone()['completed']
-        self.close()
+        
         if total == 0:
             return 0
         
@@ -222,7 +226,7 @@ class DatabaseConnector:
         sql = "SELECT AVG(duration_minutes) AS avg_minutes FROM sessions WHERE session_type='work'"
         self.cursor.execute(sql)
         result = self.cursor.fetchone()
-        self.close()
+        
         if result and result['avg_minutes']:
             return round(result['avg_minutes'], 2)
         else:
@@ -240,7 +244,7 @@ class DatabaseConnector:
         """
         self.cursor.execute(sql)
         result = self.cursor.fetchone()
-        self.close()
+        
         if result:
             return result['study_day'], result['minutes']
         else:
@@ -255,7 +259,7 @@ class DatabaseConnector:
         """
         self.cursor.execute(sql)
         result = self.cursor.fetchone()
-        self.close()
+        
         return result['on_time'] if result else 0
 
     # Reflection Access
@@ -267,13 +271,13 @@ class DatabaseConnector:
         """
         self.cursor.execute(sql, (week_start, week_end, reflection_text))
         self.connection.commit()
-        self.close()
+        
 
     def fetch_reflections(self): 
         
         self.cursor.execute("SELECT * FROM reflections ORDER BY week_start DESC")
         reflections = self.cursor.fetchall()
-        self.close()
+        
         return reflections
         
     def edit_reflection(self, reflection_id, reflection_text): 
@@ -282,7 +286,7 @@ class DatabaseConnector:
         try:
             self.cursor.execute(sql, (reflection_text, reflection_id))
             self.connection.commit()
-            self.close()
+            
             return True
         except Exception as e:
             print("Error updating",e)
@@ -293,5 +297,7 @@ class DatabaseConnector:
         sql = "DELETE FROM reflections WHERE id=%s"
         self.cursor.execute(sql, (reflection_id,))
         self.connection.commit()
-        self.close()
+        
 
+con = DatabaseConnector()
+con.connect()

@@ -10,10 +10,10 @@ from typing import List, Dict, Tuple
 
 # datetime,timedelta - used to work with dates and calculate the remaining days
 #typing - used to make our code clear about what data types to expect
-
 class TimeAllocator():
     def __init__(self):
         self.database_handler = datahandler.DatabaseConnector() # Used for referencing the methods in the datahandler's DatabaseConnector class
+        self.database_handler.connect()
         self.tasks = self.database_handler.fetch_tasks_by_status('Pending') + self.database_handler.fetch_tasks_by_status('In Progress') # Storing "Pending" and "In Progress Assignments"
 
     """
@@ -75,16 +75,14 @@ class TimeAllocator():
     Main Function
     """
     def main(self):
-        self.database_handler.connect()
 
         prioritized_tasks = self.indexing_tasks_with_priorities()
 
         # Output: [prioritized_task["index"]]. task[prioritized_task]
+        print("\n========== KKRONOS TASK Allocator ==========")
         for prioritized_task in prioritized_tasks:
                 item = self.database_handler.fetch_task_by_id(prioritized_task['task_id'])
-                print(f'{prioritized_task['index']}. {item['title']} (Due: {item['deadline']}) | Priority: {prioritized_task['priority']}')
+                print(f'{prioritized_task['index']}. {item['title']} (Due: {item['deadline']}) | Priority: {round(prioritized_task['priority'], 2)}')
+        
+        print("==========================================")
                 
-        self.database_handler.connect()
-# TEST CODE - We'll remove this later
-test = TimeAllocator()
-test.main()
