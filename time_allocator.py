@@ -12,6 +12,7 @@ from typing import List, Dict, Tuple
 #typing - used to make our code clear about what data types to expect
 class TimeAllocator():
     def __init__(self):
+        
         self.database_handler = datahandler.DatabaseConnector() # Used for referencing the methods in the datahandler's DatabaseConnector class
         self.database_handler.connect()
         self.tasks = self.database_handler.fetch_tasks_by_status('Pending') + self.database_handler.fetch_tasks_by_status('In Progress') # Storing "Pending" and "In Progress Assignments"
@@ -45,6 +46,7 @@ class TimeAllocator():
     Returns a list of tasks.
     """
     def indexing_tasks_with_priorities(self): 
+        self.database_handler.connect()
         prioritized_tasks = [] # list for the tasks
 
         # iterating through tasks
@@ -75,7 +77,7 @@ class TimeAllocator():
     Main Function
     """
     def main(self):
-
+        self.database_handler.connect()
         prioritized_tasks = self.indexing_tasks_with_priorities()
 
         # Output: [prioritized_task["index"]]. task[prioritized_task]
