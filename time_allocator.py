@@ -80,7 +80,7 @@ class TimeAllocator():
         # Output: [prioritized_task["index"]]. task[prioritized_task]
         for prioritized_task in prioritized_tasks:
                 item = self.database_handler.fetch_task_by_id(prioritized_task['task_id'])
-                print(f'{prioritized_task['index']}. {item['title']} (Due: {item['deadline']})')
+                print(f'{prioritized_task['index']}. {item['title']} (Due: {item['deadline']}) | Priority: {prioritized_task['priority']}')
                 
 # TEST CODE - We'll remove this later
 test = TimeAllocator()
