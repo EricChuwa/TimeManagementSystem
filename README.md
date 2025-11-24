@@ -1,13 +1,6 @@
 # Time Management System
-<<<<<<< HEAD
-<<<<<<< HEAD
-By: Apex Technologies LTD
-=======
-By: Apex
->>>>>>> 5770e6e (Fixed)
-=======
-By: Apex Technologies Limited
->>>>>>> b35182d (Fixed)
+## By: Apex Technologies LTD
+
 
 # Project Kronos 🎓⏱️
 
@@ -63,6 +56,7 @@ The application uses MySQL with four main tables:
 - Python 3.8+
 - MySQL database access (hosted on Aiven cloud)
 - Required Python packages: `mysql-connector-python`, `python-dotenv`
+- '.env' is required. The content includes: `DB_PASS='AVNS_v2LTVjpGY1rD4tmfkuv'`
 
 ### Quick Start
 
