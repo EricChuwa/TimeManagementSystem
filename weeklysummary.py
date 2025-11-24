@@ -2,7 +2,8 @@
 from datetime import datetime, timedelta
 from datahandler import DatabaseConnector
 
-
+data_handler = DatabaseConnector()
+data_handler.connect()
 def get_current_week_dates():
     current_date = datetime.now().date()
     start_week = current_date - timedelta(days=current_date.weekday())
@@ -144,7 +145,7 @@ def generate_weekly_summary():
     print("\n""--------------------------------------------------")
 
 def write_reflection():
-
+    data_handler.connect()
     week_start, week_end = get_current_week_dates()
     
     print("\n""--------------------------------------------------")

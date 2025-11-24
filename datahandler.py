@@ -126,6 +126,7 @@ class DatabaseConnector:
 
     # Add Study Session
     def add_session(self, task_id, start_time, end_time, duration_minutes, session_type='work'):
+        self.connect()
         
         try:
             
@@ -143,6 +144,7 @@ class DatabaseConnector:
              
 
     def edit_session(self, session_id, **kwargs): 
+        self.connect()
         
         fields = []
         values = []
@@ -156,6 +158,7 @@ class DatabaseConnector:
         
         
     def remove_session(self, session_id):
+        self.connect()
         
         sql = "DELETE FROM sessions WHERE id=%s"
         self.cursor.execute(sql, (session_id,))
@@ -163,6 +166,7 @@ class DatabaseConnector:
          
 
     def fetch_sessions_by_task(self, task_id): 
+        self.connect()
         
         self.cursor.execute("SELECT * FROM sessions WHERE task_id=%s", (task_id,))
         sessions = self.cursor.fetchall()
@@ -170,6 +174,7 @@ class DatabaseConnector:
         return sessions
 
     def fetch_sessions(self): 
+        self.connect()
         
         self.cursor.execute("SELECT * FROM sessions")
         sessions = self.cursor.fetchall()
@@ -177,6 +182,7 @@ class DatabaseConnector:
         return sessions
 
     def fetch_sessions_by_date_range(self, start_date, end_date):
+        self.connect()
         
         sql = """
             SELECT * FROM sessions
@@ -189,7 +195,7 @@ class DatabaseConnector:
         return sessions
     
     def fetch_session_by_id(self, session_id):
-        
+        self.connect()
         self.cursor.execute("SELECT * FROM sessions WHERE id=%s", (session_id,))
         session = self.cursor.fetchone()
         
@@ -197,7 +203,7 @@ class DatabaseConnector:
 
     # Analytics
     def total_study_hours(self):
-        
+        self.connect()
         sql = "SELECT SUM(duration_minutes) AS total_minutes FROM sessions WHERE session_type='work'"
         self.cursor.execute(sql)
         result = self.cursor.fetchone()
@@ -208,7 +214,7 @@ class DatabaseConnector:
             return 0
 
     def completion_rate(self):
-        
+        self.connect()
         sql_total = "SELECT COUNT(*) AS total FROM tasks"
         sql_completed = "SELECT COUNT(*) AS completed FROM tasks WHERE status='Completed'"
         self.cursor.execute(sql_total)
@@ -222,7 +228,7 @@ class DatabaseConnector:
         return round((completed / total) * 100, 2)  # percent
 
     def average_session_length(self):
-        
+        self.connect()
         sql = "SELECT AVG(duration_minutes) AS avg_minutes FROM sessions WHERE session_type='work'"
         self.cursor.execute(sql)
         result = self.cursor.fetchone()
@@ -233,7 +239,7 @@ class DatabaseConnector:
             return 0
 
     def most_productive_day(self):
-        
+        self.connect()
         sql = """
             SELECT DATE(start_time) AS study_day, SUM(duration_minutes) AS minutes
             FROM sessions
@@ -251,7 +257,7 @@ class DatabaseConnector:
             return None, 0
 
     def tasks_completed_on_time(self):
-        
+        self.connect()
         sql = """
             SELECT COUNT(*) AS on_time
             FROM tasks
@@ -264,7 +270,7 @@ class DatabaseConnector:
 
     # Reflection Access
     def add_reflection(self, week_start, week_end, reflection_text): 
-        
+        self.connect()
         sql = """
             INSERT INTO reflections (week_start, week_end, reflection_text)
             VALUES (%s, %s, %s)
@@ -274,14 +280,14 @@ class DatabaseConnector:
         
 
     def fetch_reflections(self): 
-        
+        self.connect()
         self.cursor.execute("SELECT * FROM reflections ORDER BY week_start DESC")
         reflections = self.cursor.fetchall()
         
         return reflections
         
     def edit_reflection(self, reflection_id, reflection_text): 
-        
+        self.connect()
         sql = "UPDATE reflections SET reflection_text=%s WHERE id=%s"
         try:
             self.cursor.execute(sql, (reflection_text, reflection_id))
@@ -293,7 +299,7 @@ class DatabaseConnector:
             return False
 
     def remove_reflection(self, reflection_id):
-        
+        self.connect()
         sql = "DELETE FROM reflections WHERE id=%s"
         self.cursor.execute(sql, (reflection_id,))
         self.connection.commit()
