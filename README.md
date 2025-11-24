@@ -1,38 +1,6 @@
 # Time Management System
 By: Eric
 
-Conversation opened. 1 unread message.
-
-Skip to content
-Using ALU Mail with screen readers
-
-1 of 52
-Fwd: Document shared with you: ‘Apex Team ~ Submission Links’
-Inbox
-
-Raphael Musau
-Attachments
-09:07 (1 minute ago)
-to me
-
-
-
----------- Forwarded message ---------
-From: Eric Chuwa (via Google Docs) <drive-shares-dm-noreply@google.com>
-Date: Mon, 24 Nov 2025 at 07:53
-Subject: Document shared with you: ‘Apex Team ~ Submission Links’
-To: <r.musau@alustudent.com>
-
-
-Eric Chuwa shared a document
-Header profile photo
-Eric Chuwa (e.chuwa@alustudent.com) has invited you to edit the following document:
-Apex Team ~ Submission Links
-Open
-Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA
-You have received this email because e.chuwa@alustudent.com shared a document with you from Google Docs.	Google
- 2 attachment
-  •  Scanned by Gmail
 # Project Kronos 🎓⏱️
 
 > A Python-based CLI productivity tool designed to help students manage assignments, track study time, and improve academic performance.
