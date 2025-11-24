@@ -115,9 +115,7 @@ def get_study_hours_by_day(days=7):
 
 def display_progress_summary():
     """Print a summary of user progress."""
-    print("--------------------------------------------------")
     print("\n========== KRONOS STUDY PROGRESS SUMMARY ==========")
-    print("--------------------------------------------------")
     tasks = get_all_tasks()
     total_tasks = len(tasks)
     completed = get_completed_tasks_count()
@@ -132,11 +130,12 @@ def display_progress_summary():
 
     print(" Study Hours (Last 7 Days):")
     for day, hrs in daily_hours.items():
-        print(f"{day}: {'█' * int(hrs)} ({hrs} hrs)")
-
+        print(f"  {day}: {'█' * int(hrs)} ({hrs} hrs)")
+    print("====================================================")
+    
     # feedback
     if rate == 100:
-        print("\n Excellent work!")
+        print("\n We are what we repeatedly do. Keep up the good work!")
     elif rate >= 70:
         print("\n Good progress!")
     else:

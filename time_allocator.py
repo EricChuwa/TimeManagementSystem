@@ -79,12 +79,16 @@ class TimeAllocator():
     def main(self):
         self.database_handler.connect()
         prioritized_tasks = self.indexing_tasks_with_priorities()
+        overduetasks = self.database_handler.fetch_overdue_tasks()
 
         # Output: [prioritized_task["index"]]. task[prioritized_task]
-        print("\n========== KKRONOS TASK Allocator ==========")
+        print("\n=========================================== KRONOS TASK ALLOCATOR ==========================================")
         for prioritized_task in prioritized_tasks:
                 item = self.database_handler.fetch_task_by_id(prioritized_task['task_id'])
                 print(f'{prioritized_task['index']}. {item['title']} (Due: {item['deadline']}) | Priority: {round(prioritized_task['priority'], 2)}')
         
-        print("==========================================")
+        print("Overdue: ")
+        for overdue_task in overduetasks:
+            print(f'{overdue_task['id']}. {overdue_task['title']} (Due: {overdue_task['deadline']})')
+        print("=============================================================================================================")
                 

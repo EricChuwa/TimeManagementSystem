@@ -1,6 +1,8 @@
 import time
 from datetime import datetime, timedelta
 from datahandler import *
+
+
 def timestamp(min):
     total_minutes = min
     start_time = datetime.now()
@@ -18,6 +20,7 @@ def adding_to_database(min):
     else:
         print("\nFailed to add a session. Please try again.")
 
+
     database.close()
 def countdown(minutes, label):
     total_seconds = minutes * 60
@@ -28,19 +31,22 @@ def countdown(minutes, label):
         total_seconds -= 1
     print(f"\n {label} complete!")
 
+
 def pomodoro_session(total_minutes):
     cycles = total_minutes // 30
     remainder = total_minutes % 30
     print(f"\nTotal time: {total_minutes} minutes → {cycles} Pomodoro cycles + {remainder} extra minutes")
 
+
     for i in range(cycles):
-        print(f"\n Cycle {i+1} - Study for 25 minutes")
+        print(f"\nCycle {i+1} - Study for 25 minutes")
         countdown(25, "Study time")
         print("Great job! Time for a 5-minute break.")
         countdown(5, "Break time")
 
+
     if remainder >= 5:
-        print(f"\n Final study block: {remainder - 5} minutes")
+        print(f"\nFinal study block: {remainder - 5} minutes")
         countdown(remainder - 5, "Study time")
         print("Final 5-minute break")
         countdown(5, "Break time")
@@ -48,11 +54,12 @@ def pomodoro_session(total_minutes):
         print(f"\nFinal short study block: {remainder} minutes")
         countdown(remainder, "Study time")
 
+
     print("\nAll done! You’ve completed your study session.")
 def set_session_minutes():
     while True:
         try:
-            total_minutes = int(input("Enter total study time in minutes: "))
+            total_minutes = int(input("Enter total study time in 'minutes: "))
             if total_minutes <= 0:
                 print("Please enter a positive integer for minutes.")
                 continue

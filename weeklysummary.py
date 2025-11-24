@@ -87,7 +87,7 @@ def generate_weekly_summary():
         productive_hours = 0
     print("\n""--------------------------------------------------")
     print("---------------WEEK STATISTICS:------------------------")
-    print("\n""--------------------------------------------------")
+    print("--------------------------------------------------")
     print("COMPLETED TASKS:")
     print(f"    You completed {completed_tasks} out of {tasks_due} assignments this week")
     print("TOTAL HOURS STUDIED:")
@@ -296,8 +296,8 @@ def updating_reflections():
 def weekly_summary_menu():
     while True:
         print("\n""--------------------------------------------------")
-        print("======== WEEKLY SUMMARY MENU ===========")
-        print("\n""--------------------------------------------------")
+        print("=========== WEEKLY SUMMARY MENU ===========")
+        print("--------------------------------------------------")
         print("1. Generate this week's summary")
         print("2. Write weekly reflection")
         print("3. Past reflections")

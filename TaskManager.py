@@ -152,6 +152,7 @@ class TaskManager():
         # Iterating through tasks
         for task in tasks:
             print(f"{task['id']}. {task['title']} (Status: {task['status']}) | Due: {task['deadline']}") 
+        print("==========================================")
         
     def menu_display(self, menu):
         for key, item in menu.items():
@@ -161,19 +162,18 @@ class TaskManager():
         while True:
             print("\n================== TASKS =================")
             self.menu_display(self.main_menu_options)
-
+            print("==========================================")
             user_choice = input("Enter Selection: ")
 
             menu_item = self.main_menu_options.get(user_choice)
 
             if menu_item:
                 if menu_item.func:
-                    print("==========================================")
+                    
                     menu_item.func()
                 else:
-                    print("==========================================")
+                    
                     break
             else:
-                print("==========================================")
                 print("Invalid Selection")
 

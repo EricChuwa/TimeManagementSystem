@@ -1,5 +1,5 @@
 #importing database handler
-import datahandler
+from collections import namedtuple
 
 # Importing peoples files
 from weeklysummary import *
@@ -11,41 +11,43 @@ from time_allocator import *
 # Initializing class handlers
 task_handler = TaskManager()
 time_allocater = TimeAllocator()
-
 data_handler = DatabaseConnector()
+
 data_handler.connect()
 
-def display_menu():
-    print("\n========== KRONOS STUDY TRACKER ==========")
-    print("1. Manage Assignments")
-    print("2. View Study Plan")
-    print("3. Start Timer")
-    print("4. View Progress")
-    print("5. Weekly Summary")
-    print("6. Exit")
-    print("==========================================")
+Menu = namedtuple('Menu', ['desc', 'func'])
 
-while True:
-    display_menu()
-    choice = input("Choose an option (1-6)")
-    if choice.strip() == " ":
-          print("Invalid option. Please enter a number between 1 and 6.")
-          continue
-    if choice =="1": # Eric's code
-         task_handler.main()
-    if choice =="2":# Raphael's code
-         time_allocater.main()
-    if choice == "3":# Albert's code
-         pomodoro_main()
-    if choice =="4":# Alvin's code
-         display_progress_summary()
-    if choice =="5":# My code
-         weekly_summary_menu()
-    if choice =="6": # My code
-         print("Thank you for using this platform.")  
-         exit
-    else:
-         print("Invalid input. Please enter(1-6)")
-         continue
+home_menu = {
+     "1" : Menu('Manage Assignments', task_handler.main),
+     "2" : Menu('View Study Plan', time_allocater.main),
+     "3" : Menu('Start Timer', pomodoro_main),
+     "4" : Menu('View Progress', display_progress_summary),
+     "5" : Menu('Weekly Summary', weekly_summary_menu),
+     "0" : Menu('Exit', None)
+}
+
+def display_menu():
+     print("\n==========================================")
+     print("                 <KRONOS>                 ")
+     print("==========================================")
+
+     print("\n========== KRONOS STUDY TRACKER ==========")
+     for key, item in home_menu.items():
+          print(f"{key}. {item.desc}")
+     print("==========================================")
+
+while True:  
+     display_menu()
+     choice = input("Enter Selection (1-6): ")
+     menu_item = home_menu.get(choice)
+
+     if menu_item:
+          if menu_item.func:
+               menu_item.func()
+          else:
+               break 
+     else:
+          print('Invalid Option!')
+
 
     
