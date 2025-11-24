@@ -1,5 +1,5 @@
 # Time Management System
-By: Eric
+By: Apex Technologies LTD
 
 # Project Kronos 🎓⏱️
 
