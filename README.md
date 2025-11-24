@@ -1,9 +1,13 @@
 # Time Management System
 <<<<<<< HEAD
+<<<<<<< HEAD
 By: Apex Technologies LTD
 =======
 By: Apex
 >>>>>>> 5770e6e (Fixed)
+=======
+By: Apex Technologies Limited
+>>>>>>> b35182d (Fixed)
 
 # Project Kronos 🎓⏱️
 
