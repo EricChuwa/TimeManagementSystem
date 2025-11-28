@@ -1,17 +1,20 @@
 import mysql.connector
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()
+env_path = Path(__file__).resolve().parent.parent / ".env"
+
+load_dotenv(dotenv_path=env_path)
 
 class DatabaseConnector:
     def __init__(self):
         self.config = {
-            'host': 'apex-2025-ekco-2048.e.aivencloud.com',
-            'user': 'avnadmin',
+            'host': os.getenv('DB_HOST'),
+            'user': os.getenv('DB_USER'),
             'password': os.getenv('DB_PASS'),
-            'port': 21911,
-            'database': 'KRONOS',
+            'port': int(os.getenv('DB_PORT')),
+            'database': os.getenv('DB_NAME'),
             'ssl_disabled' : True
         }
         self.connection = None
