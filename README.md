@@ -76,7 +76,7 @@ The application uses MySQL with four main tables:
 
    ```env
    DB_HOST=your-mysql-host
-   DB_PORT=3306
+   DB_PORT=your-port
    DB_USER=your-username
    DB_PASS=your-password
    DB_NAME=KronosDB
