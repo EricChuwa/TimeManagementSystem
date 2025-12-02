@@ -48,6 +48,50 @@ The application uses MySQL with four main tables:
 - **preferences** - Stores user settings (optional)
 
 ---
+## Database Setup
+
+This project uses a MySQL database (e.g., Aiven MySQL) with a schema managed by a Python setup script.[1]
+
+### 1. Create `.env` file
+
+Create a `.env` file in the project root with your database credentials:[2]
+
+```env
+DB_HOST=your-mysql-host
+DB_PORT=3306
+DB_USER=your-username
+DB_PASS=your-password
+DB_NAME=KronosDB
+```
+
+### 2. Install dependencies
+
+Install the required Python packages:[1][2]
+
+```bash
+pip install mysql-connector-python python-dotenv
+```
+
+### 3. Run the database builder
+
+The project includes a `DatabaseBuilder` class that will:
+
+- Connect to the MySQL server  
+- Create the `KronosDB` database if it does not exist  
+- Create the `Tasks`, `Sessions`, and `Reflections` tables with the correct schema[1]
+
+Run the setup script:
+
+```bash
+python path/to/your_database_builder_script.py
+```
+
+If the script finishes without errors, the database and all tables are ready to use.
+
+[1](https://dev.mysql.com/doc/connector-python/en/)
+[2](https://www.w3schools.com/python/python_mysql_getstarted.asp)
+
+---
 
 ## 🚀 Installation & Setup
 
