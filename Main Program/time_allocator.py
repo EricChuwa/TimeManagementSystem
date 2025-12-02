@@ -28,7 +28,7 @@ class TimeAllocator():
         #Getting today's date
         today = datetime.now().date()
         #Converting the deadline string to a date object
-        deadline_date = deadline
+        deadline_date = deadline.date()
         #Calculate days remaining
         days_remaining = (deadline_date - today).days
 
