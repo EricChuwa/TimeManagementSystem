@@ -27,14 +27,16 @@ Project Kronos is a comprehensive time management system that helps students org
 
 ```
 kronos/
-├── main.py                    # Main application menu
-├── datahandler.py            # MySQL database operations
-├── TaskManager.py            # Assignment CRUD operations (Eric)
-├── time_allocator.py         # Task prioritization (Raphael)
-├── PomodoroTimer.py          # Study timer with session logging (Albert)
-├── progress_analyzer.py      # Statistics and analytics (Alvin)
-├── weeklysummary.py          # Weekly reports and reflections (Michael)
+├──Main Program/
+   ├── main.py                    # Main application menu
+   ├── datahandler.py            # MySQL database operations
+   ├── TaskManager.py            # Assignment CRUD operations (Eric)
+   ├── time_allocator.py         # Task prioritization (Raphael)
+   ├── PomodoroTimer.py          # Study timer with session logging (Albert)
+   ├── progress_analyzer.py      # Statistics and analytics (Alvin)
+   ├── weeklysummary.py          # Weekly reports and reflections (Michael)
 ├── .env                      # Database credentials (not committed)
+├── SettingUpDatabase.py # Sets up database after data is put in the .env
 └── README.md
 ```
 
