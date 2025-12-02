@@ -81,7 +81,7 @@ The application uses MySQL with four main tables:
    DB_PASS=your-password
    DB_NAME=KronosDB
    ```
-### 3. Run the database builder
+4. **Run the database builder**
 
    The project includes a `DatabaseBuilder` class that will:
 
@@ -94,7 +94,7 @@ The application uses MySQL with four main tables:
    ```bash
    python path/to/SettingUpDatabase.py
    ```
-4. **Run the application**
+5. **Run the application**
    ```bash
    python main.py
    ```
