@@ -47,6 +47,7 @@ class TimeAllocator():
     """
     def indexing_tasks_with_priorities(self): 
         self.database_handler.connect()
+        self.tasks = self.database_handler.fetch_tasks_by_status('Pending') + self.database_handler.fetch_tasks_by_status('In Progress')
         prioritized_tasks = [] # list for the tasks
 
         # iterating through tasks
